@@ -2,10 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../routes/app_routes.dart';
-import 'character_controller.dart';
+import 'book_controller.dart';
 
-class CharacterView extends GetView<CharacterController> {
-  const CharacterView({super.key});
+class BookView extends GetView<BookController> {
+  const BookView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +20,13 @@ class CharacterView extends GetView<CharacterController> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(controller.errorMessage.value,
-                    textAlign: TextAlign.center),
+                Text(
+                  controller.errorMessage.value,
+                  textAlign: TextAlign.center,
+                ),
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: controller.loadCharacters,
+                  onPressed: controller.loadBooks,
                   child: const Text('Retry'),
                 ),
               ],
@@ -33,28 +35,23 @@ class CharacterView extends GetView<CharacterController> {
         );
       }
       return ListView.builder(
-        itemCount: controller.characters.length,
+        itemCount: controller.books.length,
         itemBuilder: (context, index) {
-          final character = controller.characters[index];
+          final book = controller.books[index];
           return ListTile(
             leading: CircleAvatar(
-              backgroundImage: character.image.isNotEmpty
-                  ? CachedNetworkImageProvider(character.image)
+              backgroundImage: book.cover.isNotEmpty
+                  ? CachedNetworkImageProvider(book.cover)
                   : null,
-              child: character.image.isEmpty
-                  ? const Icon(Icons.person)
-                  : null,
+              child: book.cover.isEmpty ? const Icon(Icons.book) : null,
             ),
             title: Text(
-              character.fullName,
+              book.title,
               style: const TextStyle(fontWeight: FontWeight.w600),
             ),
-            subtitle: Text(character.interpretedBy),
+            subtitle: Text('Release: ${book.releaseDate}'),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () => Get.toNamed(
-              AppRoutes.characterDetail,
-              arguments: character,
-            ),
+            onTap: () => Get.toNamed(AppRoutes.bookDetail, arguments: book),
           );
         },
       );

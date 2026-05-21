@@ -1,18 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../data/models/character_model.dart';
+import '../../data/models/book_model.dart';
 
-class CharacterDetailView extends StatelessWidget {
-  const CharacterDetailView({super.key});
+class BookDetailView extends StatelessWidget {
+  const BookDetailView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final CharacterModel character = Get.arguments as CharacterModel;
+    final BookModel book = Get.arguments as BookModel;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(character.fullName),
+        title: Text(book.title),
         backgroundColor: Colors.green.shade800,
         foregroundColor: Colors.white,
       ),
@@ -20,9 +20,9 @@ class CharacterDetailView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (character.image.isNotEmpty)
+            if (book.cover.isNotEmpty)
               CachedNetworkImage(
-                imageUrl: character.image,
+                imageUrl: book.cover,
                 width: double.infinity,
                 height: 280,
                 fit: BoxFit.cover,
@@ -40,17 +40,11 @@ class CharacterDetailView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _row('Full Name', character.fullName),
-                  _row('Nickname', character.nickname),
-                  _row('Hogwarts House', character.hogwartsHouse),
-                  _row('Interpreted By', character.interpretedBy),
-                  _row('Birthdate', character.birthdate),
-                  _row(
-                    'Children',
-                    character.children.isEmpty
-                        ? 'None'
-                        : character.children.join(', '),
-                  ),
+                  _row('Title', book.title),
+                  _row('Original Title', book.originalTitle),
+                  _row('Release Date', book.releaseDate),
+                  _row('Description', book.description),
+                  _row('Pages', book.pages.toString()),
                 ],
               ),
             ),
@@ -76,9 +70,7 @@ class CharacterDetailView extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
-            child: Text(value.isNotEmpty ? value : '-'),
-          ),
+          Expanded(child: Text(value.isNotEmpty ? value : '-')),
         ],
       ),
     );

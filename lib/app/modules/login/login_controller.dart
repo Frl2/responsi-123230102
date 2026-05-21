@@ -9,7 +9,7 @@ class LoginController extends GetxController {
   final isLoading = false.obs;
 
   static const String _username = 'admin';
-  static const String _password = 'admin123';
+  static const String _password = '123230102';
 
   Future<void> login() async {
     final username = usernameController.text.trim();
@@ -31,6 +31,7 @@ class LoginController extends GetxController {
     if (username == _username && password == _password) {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('isLoggedIn', true);
+      await prefs.setString('username', username);
 
       Get.offAllNamed(AppRoutes.home);
       Get.snackbar(

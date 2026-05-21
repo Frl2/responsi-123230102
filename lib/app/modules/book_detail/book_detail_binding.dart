@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-class CharacterDetailBinding extends Bindings {
+class BookDetailBinding extends Bindings {
   @override
   void dependencies() {}
 }

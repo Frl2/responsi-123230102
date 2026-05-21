@@ -1,26 +1,26 @@
 import 'package:get/get.dart';
-import '../../data/models/character_model.dart';
+import '../../data/models/book_model.dart';
 import '../../data/providers/api_provider.dart';
 
-class CharacterController extends GetxController {
+class BookController extends GetxController {
   final _api = ApiProvider();
-  final characters = <CharacterModel>[].obs;
+  final books = <BookModel>[].obs;
   final isLoading = true.obs;
   final errorMessage = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
-    loadCharacters();
+    loadBooks();
   }
 
-  Future<void> loadCharacters() async {
+  Future<void> loadBooks() async {
     isLoading.value = true;
     errorMessage.value = '';
     try {
-      characters.value = await _api.getCharacters();
+      books.value = await _api.getBooks();
     } catch (e) {
-      errorMessage.value = 'Failed to load characters. Check your connection.';
+      errorMessage.value = 'Failed to load books. Check your connection.';
     } finally {
       isLoading.value = false;
     }

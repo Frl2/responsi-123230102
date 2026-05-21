@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../routes/app_routes.dart';
 import 'home_controller.dart';
-import '../character/character_view.dart';
+import '../book/book_view.dart';
 import '../spell/spell_view.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -24,51 +24,61 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Scaffold(
-          appBar: AppBar(
-            title: Text(
-              controller.currentIndex.value == 0
-                  ? 'Harry Potter Characters'
-                  : 'Harry Potter Spells Gallery',
-            ),
-            backgroundColor: Colors.green.shade800,
-            foregroundColor: Colors.white,
-            actions: [
-              if (controller.currentIndex.value == 1)
-                IconButton(
-                  icon: const Icon(Icons.favorite),
-                  tooltip: 'Favorite Spells',
-                  onPressed: () => Get.toNamed(AppRoutes.favoriteSpells),
-                ),
+    return Obx(
+      () => Scaffold(
+        appBar: AppBar(
+          title: Text(
+            controller.currentIndex.value == 0
+                ? 'Harry Potter Books'
+                : 'Harry Potter Spells Gallery',
+          ),
+          backgroundColor: Colors.green.shade800,
+          foregroundColor: Colors.white,
+          actions: [
+            if (controller.currentIndex.value == 1)
               IconButton(
-                icon: const Icon(Icons.logout),
-                tooltip: 'Logout',
-                onPressed: _logout,
+                icon: const Icon(Icons.favorite),
+                tooltip: 'Favorite Spells',
+                onPressed: () => Get.toNamed(AppRoutes.favoriteSpells),
               ),
-            ],
-          ),
-          body: IndexedStack(
-            index: controller.currentIndex.value,
-            children: const [
-              CharacterView(),
-              SpellView(),
-            ],
-          ),
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: controller.currentIndex.value,
-            onTap: controller.changeTab,
-            selectedItemColor: Colors.green.shade800,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.people),
-                label: 'Characters',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.auto_fix_high),
-                label: 'Spells',
-              ),
-            ],
-          ),
-        ));
+            IconButton(
+              icon: const Icon(Icons.person),
+              tooltip: 'Profile',
+              onPressed: () => Get.toNamed('/profile'),
+            ),
+            IconButton(
+              icon: const Icon(Icons.logout),
+              tooltip: 'Logout',
+              onPressed: _logout,
+            ),
+          ],
+        ),
+        floatingActionButton: controller.currentIndex.value == 0
+            ? FloatingActionButton.extended(
+                onPressed: () => controller.changeTab(1),
+                backgroundColor: Colors.green.shade800,
+                foregroundColor: Colors.white,
+                icon: const Icon(Icons.auto_fix_high),
+                label: const Text('Spells'),
+              )
+            : null,
+        body: IndexedStack(
+          index: controller.currentIndex.value,
+          children: const [BookView(), SpellView()],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: controller.currentIndex.value,
+          onTap: controller.changeTab,
+          selectedItemColor: Colors.green.shade800,
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Books'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.auto_fix_high),
+              label: 'Spells',
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
